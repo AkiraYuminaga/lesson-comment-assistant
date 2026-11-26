@@ -24,7 +24,7 @@ dotenvy = "0.15"
 # Security & Crypto
 secrecy = { version = "0.8", features = ["serde"] }
 sha2 = "0.10"
-hmac = "0.12"
+hmac = "0.13"
 hex = "0.4"
 
 # Error handling
