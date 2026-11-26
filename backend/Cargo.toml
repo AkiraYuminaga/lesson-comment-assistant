@@ -7,7 +7,7 @@ edition = "2021"
 # Web framework
 axum = { version = "0.7", features = ["macros"] }
 tokio = { version = "1", features = ["full"] }
-tower-http = { version = "0.5", features = ["cors", "trace", "limit"] }
+tower-http = { version = "0.6", features = ["cors", "trace", "limit"] }
 tower_governor = "0.4"  # 0.5+ requires axum 0.8
 governor = "0.6"  # must match tower_governor's governor version
 
