@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>課堂評語助手設定</title>
+  <style>
+    :root {
+      --accent: #f26b1d;
+      --accent-hover: #d95a10;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #f6f7f9;
+      --surface: #ffffff;
+      --ok: #15803d;
+      --err: #b91c1c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 40px 16px;
+      background: var(--bg);
+      color: var(--text);
+      font: 14px/1.6 "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+    }
+    main {
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 28px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(17, 24, 39, 0.06);
+    }
+    h1 { margin: 0 0 4px; font-size: 20px; }
+    .lead { margin: 0 0 24px; color: var(--muted); }
+    label { display: block; margin-bottom: 18px; font-weight: 600; }
+    label small { display: block; margin-top: 2px; font-weight: 400; color: var(--muted); }
+    input {
+      width: 100%;
+      margin-top: 6px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font: inherit;
+      outline: none;
+    }
+    input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(242, 107, 29, 0.15); }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    button {
+      padding: 10px 18px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fff;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    button.primary:hover { background: var(--accent-hover); }
+    #status { min-height: 22px; margin: 16px 0 0; }
+    #status.ok { color: var(--ok); }
+    #status.err { color: var(--err); }
+    ol { margin: 24px 0 0; padding-left: 20px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>課堂評語助手設定</h1>
+    <p class="lead">填好下面兩項，評語面板就會出現在學務系統的頁面上。</p>
+
+    <form id="form">
+      <label>學務系統網址
+        <small>你平常寫課堂紀錄的網站，例如 https://school.example.com（貼上任一頁的網址也可以）</small>
+        <input id="siteUrl" type="url" placeholder="https://school.example.com" required>
+      </label>
+      <label>後端網址
+        <small>評語生成服務的位址；在自己電腦上執行就維持預設</small>
+        <input id="backendUrl" type="url" placeholder="http://127.0.0.1:8787">
+      </label>
+      <div class="actions">
+        <button class="primary" type="submit">儲存</button>
+        <button id="test" type="button">測試後端連線</button>
+      </div>
+    </form>
+    <p id="status" role="status"></p>
+
+    <ol>
+      <li>儲存時 Chrome 會詢問是否允許存取這個網站，請按「允許」。</li>
+      <li>儲存後重新整理學務系統的頁面，右下角就會出現評語面板。</li>
+    </ol>
+  </main>
+  <script src="options.js"></script>
+</body>
+</html>

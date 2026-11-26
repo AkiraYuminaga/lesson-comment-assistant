@@ -1,0 +1,653 @@
+/* The panel renders inside a shadow root; change the main colour via ui.accent in site-config.js. */
+:host { all: initial; }
+
+#sca-lite-root {
+  --sca-accent: #f26b1d;
+  --sca-accent-hover: color-mix(in srgb, var(--sca-accent) 85%, #000);
+  --sca-accent-soft: color-mix(in srgb, var(--sca-accent) 10%, #fff);
+  --sca-text: #1f2937;
+  --sca-muted: #6b7280;
+  --sca-border: #e5e7eb;
+  --sca-field: #f9fafb;
+  --sca-surface: #ffffff;
+  --sca-success: #15803d;
+  --sca-error: #b91c1c;
+
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 2147483647;
+  font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", "Segoe UI", sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--sca-text);
+}
+
+#sca-lite-root *,
+#sca-lite-root *::before,
+#sca-lite-root *::after {
+  box-sizing: border-box;
+}
+
+#sca-lite-root .sca-hidden {
+  display: none !important;
+}
+
+/* ---------- Floating reopen button ---------- */
+#sca-lite-root .sca-fab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 999px;
+  background: var(--sca-accent);
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--sca-accent) 35%, transparent);
+}
+
+#sca-lite-root .sca-fab:hover {
+  background: var(--sca-accent-hover);
+}
+
+#sca-lite-root .sca-fab-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+/* ---------- Panel shell ---------- */
+#sca-lite-root .sca-panel {
+  display: flex;
+  flex-direction: column;
+  width: 372px;
+  max-height: calc(100vh - 40px);
+  background: var(--sca-surface);
+  border: 1px solid var(--sca-border);
+  border-radius: 16px;
+  box-shadow: 0 20px 48px rgba(17, 24, 39, 0.18), 0 2px 6px rgba(17, 24, 39, 0.06);
+  overflow: hidden;
+}
+
+#sca-lite-root .sca-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--sca-accent) 6%, #fff) 0%, #ffffff 70%);
+  border-bottom: 1px solid var(--sca-border);
+}
+
+#sca-lite-root .sca-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#sca-lite-root .sca-logo {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--sca-accent-soft);
+  font-size: 18px;
+}
+
+#sca-lite-root .sca-head h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--sca-text);
+}
+
+#sca-lite-root .sca-head p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--sca-muted);
+}
+
+#sca-lite-root .sca-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 16px 12px;
+}
+
+#sca-lite-root .sca-section {
+  padding: 12px 0;
+  border-bottom: 1px dashed var(--sca-border);
+}
+
+#sca-lite-root .sca-section:last-of-type {
+  border-bottom: none;
+}
+
+#sca-lite-root .sca-section-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--sca-text);
+}
+
+#sca-lite-root .sca-section-title small,
+#sca-lite-root .sca-field small {
+  font-weight: 400;
+  color: var(--sca-muted);
+}
+
+/* ---------- Fields ---------- */
+#sca-lite-root .sca-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+#sca-lite-root .sca-span-2 {
+  grid-column: span 2;
+}
+
+#sca-lite-root .sca-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+}
+
+#sca-lite-root input:not([type="radio"]):not([type="checkbox"]),
+#sca-lite-root select,
+#sca-lite-root textarea {
+  width: 100%;
+  margin: 0;
+  padding: 8px 10px;
+  border: 1px solid var(--sca-border);
+  border-radius: 10px;
+  background: var(--sca-field);
+  font: inherit;
+  font-weight: 400;
+  color: var(--sca-text);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+
+#sca-lite-root textarea {
+  resize: vertical;
+}
+
+#sca-lite-root input:not([type="radio"]):not([type="checkbox"]):focus,
+#sca-lite-root select:focus,
+#sca-lite-root textarea:focus {
+  border-color: var(--sca-accent);
+  background: #fff;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--sca-accent) 15%, transparent);
+}
+
+/* ---------- Segmented progress ---------- */
+#sca-lite-root .sca-segment {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  padding: 4px;
+  border-radius: 12px;
+  background: #f3f4f6;
+}
+
+#sca-lite-root .sca-segment label {
+  margin: 0;
+  cursor: pointer;
+}
+
+#sca-lite-root .sca-segment input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+#sca-lite-root .sca-segment span {
+  display: block;
+  padding: 6px 4px;
+  border-radius: 9px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sca-muted);
+  transition: background 0.15s, color 0.15s;
+}
+
+#sca-lite-root .sca-segment input:checked + span {
+  background: #fff;
+  color: var(--sca-accent);
+  box-shadow: 0 1px 3px rgba(17, 24, 39, 0.12);
+}
+
+#sca-lite-root .sca-segment input:focus-visible + span {
+  outline: 2px solid var(--sca-accent);
+}
+
+/* ---------- Keyword picker ---------- */
+#sca-lite-root .sca-selected {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-height: 38px;
+  margin-bottom: 8px;
+  padding: 7px 10px;
+  border: 1px dashed color-mix(in srgb, var(--sca-accent) 45%, #fff);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--sca-accent) 4%, #fff);
+}
+
+#sca-lite-root .sca-selected-label {
+  flex: none;
+  padding-top: 2px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--sca-accent-hover);
+}
+
+#sca-lite-root .sca-selected-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  min-width: 0;
+}
+
+#sca-lite-root .sca-selected-empty {
+  padding-top: 1px;
+  font-size: 12px;
+  color: var(--sca-muted);
+}
+
+#sca-lite-root .sca-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 1px 4px 1px 9px;
+  border-radius: 999px;
+  background: var(--sca-accent);
+  color: #fff;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+#sca-lite-root .sca-pill button {
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+  font-size: 11px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+#sca-lite-root .sca-pill button:hover {
+  background: rgba(255, 255, 255, 0.45);
+}
+
+#sca-lite-root .sca-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+#sca-lite-root .sca-quick {
+  margin-bottom: 8px;
+}
+
+#sca-lite-root .sca-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border: 1px solid var(--sca-border);
+  border-radius: 999px;
+  background: #fff;
+  font: inherit;
+  font-size: 12px;
+  color: #374151;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+#sca-lite-root .sca-chip:hover {
+  border-color: var(--sca-accent);
+  color: var(--sca-accent);
+}
+
+#sca-lite-root .sca-chip.is-on {
+  border-color: var(--sca-accent);
+  background: var(--sca-accent-soft);
+  color: var(--sca-accent-hover);
+  font-weight: 600;
+}
+
+#sca-lite-root .sca-chip.is-on::before {
+  content: "✓";
+  font-size: 11px;
+}
+
+#sca-lite-root .sca-chip.tone-warn.is-on {
+  border-color: #f59e0b;
+  background: #fffbeb;
+  color: #b45309;
+}
+
+#sca-lite-root .sca-chip-del {
+  margin-left: 2px;
+  font-size: 11px;
+  color: var(--sca-muted);
+}
+
+#sca-lite-root .sca-chip-del:hover {
+  color: var(--sca-error);
+}
+
+#sca-lite-root .sca-library {
+  max-height: 240px;
+  overflow-y: auto;
+  margin-bottom: 8px;
+  padding: 10px;
+  border: 1px solid var(--sca-border);
+  border-radius: 12px;
+  background: var(--sca-field);
+}
+
+#sca-lite-root .sca-group + .sca-group {
+  margin-top: 10px;
+}
+
+#sca-lite-root .sca-group-title {
+  margin: 0 0 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--sca-muted);
+}
+
+#sca-lite-root .sca-add {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+#sca-lite-root .sca-add input {
+  flex: 1;
+  padding: 5px 10px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+}
+
+#sca-lite-root .sca-add button {
+  flex: none;
+  padding: 5px 12px;
+  border: none;
+  border-radius: 10px;
+  background: var(--sca-accent);
+  color: #fff;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#sca-lite-root .sca-note {
+  font-size: 12px !important;
+}
+
+/* ---------- Switches ---------- */
+#sca-lite-root .sca-toggles {
+  display: flex;
+  gap: 18px;
+  padding: 10px 0 4px;
+}
+
+#sca-lite-root .sca-switch {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+}
+
+#sca-lite-root .sca-switch input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+#sca-lite-root .sca-switch-track {
+  position: relative;
+  width: 32px;
+  height: 18px;
+  border-radius: 999px;
+  background: #d1d5db;
+  transition: background 0.15s;
+}
+
+#sca-lite-root .sca-switch-track::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  transition: transform 0.15s;
+}
+
+#sca-lite-root .sca-switch input:checked + .sca-switch-track {
+  background: var(--sca-accent);
+}
+
+#sca-lite-root .sca-switch input:checked + .sca-switch-track::after {
+  transform: translateX(14px);
+}
+
+#sca-lite-root .sca-switch input:focus-visible + .sca-switch-track {
+  outline: 2px solid var(--sca-accent);
+  outline-offset: 2px;
+}
+
+/* ---------- Preview ---------- */
+#sca-lite-root .sca-preview {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid color-mix(in srgb, var(--sca-accent) 25%, #fff);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--sca-accent) 4%, #fff);
+}
+
+#sca-lite-root .sca-preview header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+#sca-lite-root .sca-count {
+  margin-right: auto;
+  font-size: 11px;
+  color: var(--sca-muted);
+}
+
+#sca-lite-root .sca-preview textarea {
+  min-height: 170px;
+  background: #fff;
+  line-height: 1.7;
+}
+
+#sca-lite-root .sca-preview footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+/* ---------- Footer & buttons ---------- */
+#sca-lite-root .sca-foot {
+  padding: 10px 16px 14px;
+  border-top: 1px solid var(--sca-border);
+  background: #fff;
+}
+
+#sca-lite-root .sca-status {
+  min-height: 18px;
+  margin: 0 0 8px;
+  font-size: 12px;
+  color: var(--sca-muted);
+}
+
+#sca-lite-root .sca-status.is-success { color: var(--sca-success); }
+#sca-lite-root .sca-status.is-error { color: var(--sca-error); }
+
+#sca-lite-root .sca-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 8px;
+}
+
+#sca-lite-root .sca-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 14px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+#sca-lite-root .sca-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+#sca-lite-root .sca-btn-primary {
+  background: var(--sca-accent);
+  color: #fff;
+}
+
+#sca-lite-root .sca-btn-primary:hover:not(:disabled) {
+  background: var(--sca-accent-hover);
+}
+
+#sca-lite-root .sca-btn-secondary {
+  background: #fff;
+  border-color: var(--sca-border);
+  color: #374151;
+}
+
+#sca-lite-root .sca-btn-secondary:hover:not(:disabled) {
+  border-color: var(--sca-accent);
+  color: var(--sca-accent);
+}
+
+#sca-lite-root .sca-btn-ghost {
+  padding: 6px 10px;
+  background: transparent;
+  color: #4b5563;
+  font-size: 12px;
+}
+
+#sca-lite-root .sca-btn-ghost:hover:not(:disabled) {
+  background: #fff;
+  color: var(--sca-accent);
+}
+
+#sca-lite-root .sca-preview .sca-btn-primary {
+  padding: 6px 14px;
+  font-size: 12px;
+}
+
+#sca-lite-root .sca-icon-btn {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid var(--sca-border);
+  border-radius: 9px;
+  background: #fff;
+  color: var(--sca-muted);
+  cursor: pointer;
+}
+
+#sca-lite-root .sca-icon-btn:hover {
+  color: var(--sca-accent);
+  border-color: var(--sca-accent);
+}
+
+#sca-lite-root .sca-icon-sm {
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+}
+
+#sca-lite-root .sca-link-btn {
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sca-accent);
+  cursor: pointer;
+}
+
+/* ---------- Loading spinner ---------- */
+#sca-lite-root .sca-spinner {
+  display: none;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: sca-spin 0.8s linear infinite;
+}
+
+#sca-lite-root .is-loading .sca-spinner {
+  display: inline-block;
+}
+
+@keyframes sca-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 720px) {
+  #sca-lite-root {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+  }
+
+  #sca-lite-root .sca-panel {
+    width: auto;
+  }
+}

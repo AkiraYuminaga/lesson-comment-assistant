@@ -1,0 +1,106 @@
+<button id="sca-fab" class="sca-fab sca-hidden" type="button" aria-label="開啟課堂評語助手">
+    <span class="sca-fab-dot" aria-hidden="true"></span>評語助手
+</button>
+
+<section id="sca-panel" class="sca-panel" aria-label="課堂評語助手">
+    <header class="sca-head">
+        <div class="sca-brand">
+            <span id="sca-logo" class="sca-logo" aria-hidden="true">📝</span>
+            <div>
+                <h3 id="sca-title">課堂評語助手</h3>
+                <p id="sca-subtitle">填好資料，一鍵生成聯絡簿評語</p>
+            </div>
+        </div>
+        <button id="sca-lite-close" class="sca-icon-btn" type="button" aria-label="收起" title="收起">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 12h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+    </header>
+
+    <div class="sca-body">
+        <div class="sca-section">
+            <div class="sca-section-title">
+                <span>學生資訊</span>
+                <button id="sca-autofill" class="sca-link-btn sca-hidden" type="button">從頁面帶入</button>
+            </div>
+            <div class="sca-grid">
+                <label class="sca-field sca-span-2">
+                    <span>學生姓名</span>
+                    <input id="sca-student" placeholder="例如：小明" autocomplete="off">
+                </label>
+                <label class="sca-field">
+                    <span>課程</span>
+                    <select id="sca-course"><option value="">載入課程中…</option></select>
+                </label>
+                <label class="sca-field">
+                    <span>課次</span>
+                    <select id="sca-lesson"></select>
+                </label>
+            </div>
+        </div>
+
+        <div class="sca-section">
+            <div class="sca-section-title"><span>進度狀態</span></div>
+            <div id="sca-progress" class="sca-segment" role="radiogroup" aria-label="進度狀態"></div>
+        </div>
+
+        <div class="sca-section">
+            <div class="sca-section-title">
+                <span>學習表現</span>
+                <button id="sca-tags-toggle" class="sca-link-btn" type="button" aria-expanded="false">展開全部關鍵詞</button>
+            </div>
+            <div class="sca-selected" aria-live="polite">
+                <span class="sca-selected-label">已選擇</span>
+                <div id="sca-selected" class="sca-selected-list"></div>
+            </div>
+            <div id="sca-quick" class="sca-chips sca-quick"></div>
+            <div id="sca-library" class="sca-library sca-hidden"></div>
+            <input id="sca-performance" class="sca-note" placeholder="其他補充（可選），例如：今天會主動幫同學" autocomplete="off">
+        </div>
+
+        <div class="sca-section">
+            <label class="sca-field">
+                <span>本堂驗收問題 <small>（可選）</small></span>
+                <input id="sca-issue" placeholder="例如：迴圈是什麼？" autocomplete="off">
+            </label>
+        </div>
+
+        <div class="sca-toggles">
+            <label class="sca-switch">
+                <input id="sca-last-undone" type="checkbox">
+                <span class="sca-switch-track" aria-hidden="true"></span>
+                <span>上週未完成</span>
+            </label>
+            <label class="sca-switch">
+                <input id="sca-polish" type="checkbox" checked>
+                <span class="sca-switch-track" aria-hidden="true"></span>
+                <span>語氣潤飾</span>
+            </label>
+        </div>
+
+        <section id="sca-preview" class="sca-preview sca-hidden" aria-live="polite">
+            <header>
+                <strong>評語預覽</strong>
+                <span id="sca-count" class="sca-count"></span>
+                <button id="sca-preview-close" class="sca-icon-btn sca-icon-sm" type="button" aria-label="關閉預覽" title="關閉預覽">
+                    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                </button>
+            </header>
+            <textarea id="sca-preview-text" rows="8"></textarea>
+            <footer>
+                <button id="sca-regenerate" type="button" class="sca-btn sca-btn-ghost">重新生成</button>
+                <button id="sca-copy" type="button" class="sca-btn sca-btn-ghost">複製</button>
+                <button id="sca-confirm" type="button" class="sca-btn sca-btn-primary">確認貼上</button>
+            </footer>
+        </section>
+    </div>
+
+    <footer class="sca-foot">
+        <p id="sca-status" class="sca-status" role="status"></p>
+        <div class="sca-actions">
+            <button id="sca-paste-direct" type="button" class="sca-btn sca-btn-secondary">直接貼上</button>
+            <button id="sca-generate" type="button" class="sca-btn sca-btn-primary">
+                <span class="sca-spinner" aria-hidden="true"></span><span class="sca-btn-label">生成評語</span>
+            </button>
+        </div>
+    </footer>
+</section>

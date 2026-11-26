@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "課堂評語助手",
+  "version": "1.0.0",
+  "description": "在學務系統的課堂紀錄頁，一鍵用 AI 生成並貼上學生課堂評語。",
+  "permissions": [
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1/*",
+    "http://localhost/*"
+  ],
+  "optional_host_permissions": [
+    "https://*/*",
+    "http://*/*"
+  ],
+  "background": {
+    "service_worker": "src/background/service-worker.js"
+  },
+  "action": {
+    "default_title": "課堂評語助手設定"
+  },
+  "options_ui": {
+    "page": "src/options/options.html",
+    "open_in_tab": true
+  }
+}

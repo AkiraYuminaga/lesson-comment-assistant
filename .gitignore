@@ -1,0 +1,22 @@
+# Secrets
+.env
+**/.env
+!**/.env.example
+backend/config.json
+
+# Each teacher's own profile (the *.example.* files are the shipped templates)
+backend/config/courses.json
+backend/config/prompt.md
+backend/config/style.json
+
+# Rust build output (Cargo.lock IS committed: this is a binary crate)
+backend/target/
+
+# Editors / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Local Claude Code settings
+.claude/settings.local.json

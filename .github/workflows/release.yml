@@ -1,0 +1,102 @@
+name: Release
+
+# Push a tag like v1.0.0 to build and publish a GitHub Release:
+#   git tag v1.0.0 && git push origin v1.0.0
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  verify:
+    name: Verify version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Tag matches extension + backend versions
+        run: python3 scripts/check-extension.py "${GITHUB_REF_NAME}"
+
+  backend:
+    name: Backend (${{ matrix.target }})
+    needs: verify
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - target: aarch64-apple-darwin   # Apple Silicon Mac
+            os: macos-latest
+          - target: x86_64-apple-darwin    # Intel Mac
+            os: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: backend
+          key: ${{ matrix.target }}
+
+      - name: Test
+        working-directory: backend
+        run: cargo test --locked
+
+      - name: Build
+        working-directory: backend
+        run: cargo build --release --locked --target ${{ matrix.target }}
+
+      - name: Package
+        run: |
+          NAME="lesson-comment-backend-${GITHUB_REF_NAME}-${{ matrix.target }}"
+          mkdir -p "dist/$NAME"
+          cp "backend/target/${{ matrix.target }}/release/lesson_comment_backend" "dist/$NAME/"
+          cp backend/.env.example backend/README.md "dist/$NAME/"
+          mkdir -p "dist/$NAME/config" && cp backend/config/*.example.* "dist/$NAME/config/"
+          tar -C dist -czf "dist/$NAME.tar.gz" "$NAME"
+          shasum -a 256 "dist/$NAME.tar.gz" > "dist/$NAME.tar.gz.sha256"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: backend-${{ matrix.target }}
+          path: dist/*.tar.gz*
+
+  extension:
+    name: Extension zip
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Package
+        run: |
+          NAME="lesson-comment-extension-${GITHUB_REF_NAME}"
+          mkdir -p dist
+          (cd extension && zip -r "../dist/$NAME.zip" . -x '.*')
+          sha256sum "dist/$NAME.zip" > "dist/$NAME.zip.sha256"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: extension
+          path: dist/*.zip*
+
+  publish:
+    name: Publish GitHub Release
+    needs: [backend, extension]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true
